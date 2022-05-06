@@ -3,6 +3,13 @@ const User = require("../models/User");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 
+//For Encrypting Passwords
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = 'hellow$$orld';
+
+
 //Creating a User using: POST "/api/auth/newUser"
 router.post(
   "/newUser",
@@ -24,13 +31,27 @@ router.post(
       if (user) {
         return res.status(400).json({ error: "Email Already Exists!!!" });
       }
+
+      //Adding Salt to the Password
+      const salt = await bcrypt.genSalt(10);
+      const securePass = await bcrypt.hash(req.body.password, salt);
+
+      //Creating a New User
       user = await User.create({
         name: req.body.name,
-        password: req.body.password,
+        password: securePass, //Sending Encrypted Password to the Database
         email: req.body.email,
       });
 
-      res.json(user);
+      const data = {
+        user: {
+          id: user.id
+        }
+      }
+
+      const authToken = jwt.sign(data, JWT_SECRET);
+      // res.json(user);
+      res.json(authToken);
     } 
     
     catch (error) {
