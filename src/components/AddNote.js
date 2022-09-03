@@ -25,7 +25,7 @@ const AddNote = () => {
             <input type='text' name='title' id='title' className='border-2 border-solid w-full rounded-md h-9 px-2 mt-1 mb-3 hover:border-[#0e71b784] transition-all duration-100 focus:outline-[#3e7eaca8]' onChange={onChange}></input>
 
             <label htmlFor='description' className='font-medium text-xl'>Description</label>
-            <input type='text' name='description' id='description' className='border-2 border-solid w-full rounded-md h-9 px-2 mt-1 mb-3 hover:border-[#0e71b784] transition-all duration-100 focus:outline-[#3e7eaca8]' onChange={onChange}></input>
+            <textarea type='text' name='description' id='description' className='border-2 border-solid w-full rounded-md h-9 px-2 mt-1 mb-3 hover:border-[#0e71b784] transition-all duration-100 focus:outline-[#3e7eaca8]' onChange={onChange}></textarea>
 
             <label htmlFor='tag' className='font-medium text-xl'>Tag</label>
             <input type='text' name='tag' id='tag' className='border-2 border-solid w-full rounded-md h-9 px-2 mt-1 mb-3 hover:border-[#0e71b784] transition-all duration-100 focus:outline-[#3e7eaca8]' onChange={onChange}></input>

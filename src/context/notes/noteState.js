@@ -2,67 +2,39 @@ import React, { useState } from "react";
 import noteContext from "./noteContext";
 
 const NoteState = (props) =>{
-    const notes_initial = [
-        {
-          "_id": "62dcec0692cbeae62f516466",
-          "user": "62dce81493af3012bbecdcdd",
-          "title": "Sample Note 1",
-          "description": "Hello There!! This is My Sample Note 1 Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae exercitationem consequuntur dolorum ipsam! Hic vero distinctio repellendus sapiente. Deleniti asperiores omnis dolorem maxime quo ipsam molestiae sequi culpa. Consequatur harum cumque temporibus adipisci aperiamx.",
-          "tag": "New",
-          "date": "2022-07-24T06:51:50.046Z",
-          "__v": 0
-        },
-        {
-          "_id": "62dcec0b92cbeae62f516468",
-          "user": "62dce81493af3012bbecdcdd",
-          "title": "Sample Note 2",
-          "description": "This is ReactJS Course where we are leaning MERN Stack Development Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae exercitationem consequuntur dolorum ipsam! Hic vero distinctio repellendus sapiente. Deleniti asperiores omnis dolorem maxime quo ipsam molestiae sequi culpa. Consequatur harum cumque temporibus adipisci aperiamx.",
-          "tag": "New",
-          "date": "2022-07-24T06:51:55.941Z",
-          "__v": 0
-        },
-        {
-          "_id": "62dcec1092cbeae62f56646a",
-          "user": "62dce81493af3012bbecdcdd",
-          "title": "Sample Note 3",
-          "description": "This is Note 5 Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae exercitationem consequuntur dolorum ipsam! Hic vero distinctio repellendus sapiente. Deleniti asperiores omnis dolorem maxime quo ipsam molestiae sequi culpa. Consequatur harum cumque temporibus adipisci aperiamx.",
-          "tag": "New",
-          "date": "2022-07-24T06:52:00.974Z",
-          "__v": 0
-        },
-        {
-          "_id": "62dcec1092cbege62f51646a",
-          "user": "62dce81493af3012bbecdcdd",
-          "title": "Sample Note 4",
-          "description": "This is Note 5 Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae exercitationem consequuntur dolorum ipsam! Hic vero distinctio repellendus sapiente. Deleniti asperiores omnis dolorem maxime quo ipsam molestiae sequi culpa. Consequatur harum cumque temporibus adipisci aperiamx.",
-          "tag": "New",
-          "date": "2022-07-24T06:52:00.974Z",
-          "__v": 0
-        },
-        {
-          "_id": "62dcec1092cbeae626f51646a",
-          "user": "62dce81493af3012bbecdcdd",
-          "title": "Sample Note 5",
-          "description": "This is Note 5 Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae exercitationem consequuntur dolorum ipsam! Hic vero distinctio repellendus sapiente. Deleniti asperiores omnis dolorem maxime quo ipsam molestiae sequi culpa. Consequatur harum cumque temporibus adipisci aperiamx",
-          "tag": "New",
-          "date": "2022-07-24T06:52:00.974Z",
-          "__v": 0
-        },
-        {
-          "_id": "62dcec1092cbeae82f51646a",
-          "user": "62dce81493af3012bbecdcdd",
-          "title": "Sample Note 6",
-          "description": "This is Note 6 Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae exercitationem consequuntur dolorum ipsam! Hic vero distinctio repellendus sapiente. Deleniti asperiores omnis dolorem maxime quo ipsam molestiae sequi culpa. Consequatur harum cumque temporibus adipisci aperiamx.",
-          "tag": "New",
-          "date": "2022-07-24T06:52:00.974Z",
-          "__v": 0
-        },
-      ]
+    const host = "http://localhost:9000";
+    const notes_initial = []
       const [notes, setNotes] = useState(notes_initial)
 
+      //Fetch Notes
+      const getNotes = async () => {
+
+        //API call to Fetch all Notes
+        const res = await fetch(`${host}/api/notes/fetchNotes/`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'authToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJkY2U4MTQ5M2FmMzAxMmJiZWNkY2RkIn0sImlhdCI6MTY1ODY0NTI1N30.elXrvJXDaOh7X7drgyUj9SE0USr-gFXQjoph05KozTY'
+          }
+        });
+        const json = await res.json();
+        console.log(json);
+        setNotes(json)
+      }
+
       //Add Notes
-      const addNote = (title,description,tag) => {
-        console.log("New  Note Added");
+      const addNote = async (title,description,tag) => {
+
+        //API Fetch
+        const res = await fetch(`${host}/api/notes/addNote/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJkY2U4MTQ5M2FmMzAxMmJiZWNkY2RkIn0sImlhdCI6MTY1ODY0NTI1N30.elXrvJXDaOh7X7drgyUj9SE0USr-gFXQjoph05KozTY'
+          },
+          body: JSON.stringify({title,description,tag})
+        });
+        const json = res.json();
       const note = {
           "_id": "62dcec1092cbeae82f51646a",
           "user": "62dce81493af3012bbecdcdd",
@@ -78,13 +50,31 @@ const NoteState = (props) =>{
         
         //Concat RETURNS an array
         setNotes(notes.concat(note));
-
-
       }
       
       //Update Notes
-      const updateNote = () => {
+      const updateNote = async (id, title, description, tag) => {
+        //API Call
+        const res = await fetch(`${host}/api/notes/updateNote/${id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJkY2U4MTQ5M2FmMzAxMmJiZWNkY2RkIn0sImlhdCI6MTY1ODY0NTI1N30.elXrvJXDaOh7X7drgyUj9SE0USr-gFXQjoph05KozTY'
+          },
+          body: JSON.stringify(title,description,tag)
+        });
+        const json = res.json();
 
+        //Editing on Client Side
+        for (let i = 0; i < notes.length; i++) {
+          const element = notes[i];
+          if(element._id==id){
+            element.title = title;
+            element.description =  description;
+            element.tag = tag;
+          }
+          
+        }
       }
       
       //Delete Notes
@@ -95,7 +85,7 @@ const NoteState = (props) =>{
       }
       
     return(
-        <noteContext.Provider value={{notes, addNote, updateNote, deleteNote}}>
+        <noteContext.Provider value={{notes, addNote, updateNote, deleteNote, getNotes}}>
             {props.children}
         </noteContext.Provider>
     )
