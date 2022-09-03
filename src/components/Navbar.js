@@ -1,20 +1,26 @@
-import React from 'react'
-import { Link } from "react-router-dom";
+import React, {useEffect} from 'react'
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
+
+  let location = useLocation();
+  useEffect(()=>{
+    console.log(location);
+  },[location])
+
   return (
     <>
     <header className='w-full h-20 flex justify-between items-center px-14 py-6'>
         <h2 className='text-2xl cursor-pointer text-[#0f6bac] font-semibold'>iNoteBook</h2>
         <nav>
             <ul>
-                <li className='text-lg inline-block px-4 hover:border-b-[1px] transition-all duration-150 hover:border-black'>
+                <li className={`text-lg inline-block px-4 hover:border-b-[1px] transition-all duration-150 hover:border-black ${location.pathname==="/" ? "font-bold" : ""}`}>
                   <Link to='/'>Home</Link>
                   </li>
-                <li className='text-lg inline-block px-4 hover:border-b-[1px] transition-all duration-150 hover:border-black'>
+                <li className={`text-lg inline-block px-4 hover:border-b-[1px] transition-all duration-150 hover:border-black ${location.pathname==="/about" ? "font-bold" : ""}`}>
                   <Link to='/about'>About</Link>
                   </li>
-                <li className='text-lg inline-block px-4 hover:border-b-[1px] transition-all duration-150 hover:border-black'>
+                <li className={`text-lg inline-block px-4 hover:border-b-[1px] transition-all duration-150 hover:border-black ${location.pathname==="/contact" ? "font-bold" : ""}`}>
                   <Link to='/contact'>Contact</Link>
                   </li>
             </ul>

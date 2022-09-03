@@ -1,14 +1,14 @@
+// eslint-disable-next-line
 import React, { useContext, useEffect } from 'react'
-import noteContext from '../context/notes/noteContext';
+// import noteContext from '../context/notes/noteContext';
 
 const About = () => {
-  const a = useContext(noteContext);
-  useEffect(()=>{
-    a.update();
-    // eslint-disable-next-line 
-  },[])
+  // const a = useContext(noteContext);
+  // useEffect(()=>{
+  //   a.update();
+  // },[])
   return (
-    <div>My Name is {a.state.name}, ID: {a.state.id}</div>
+    <div>About Page</div>
   )
 }
 
